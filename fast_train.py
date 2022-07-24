@@ -100,7 +100,7 @@ def main(args):
     
     # loss functions
     content_loss = ContentLoss(content_weight=args.content_weight)
-    style_loss = StyleLoss(style_weight=args.style_weight, reduction='sum')
+    style_loss = StyleLoss(style_weight=args.style_weight)
     tv_loss = TotalVariationLoss(tv_weight=args.tv_weight)
 
     # recording meter
