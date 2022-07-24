@@ -72,7 +72,7 @@ def main(args):
     train_ds = Dataset(
         files, 
         args.data_dir, 
-        shape=(args.content_size, args.content_size)
+        shape=args.content_size
     )
 
     # train dataloader

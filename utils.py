@@ -29,10 +29,13 @@ def load_image(img_path, shape=None):
     #img /= 255.0  # get to [0, 1] range
     return img
 
-def preprocess_image(image):
+def preprocess_image(image, size):
     """preprocesses image and prepares it to be fed to the model"""
     transform = transforms.Compose([
         transforms.ToTensor(),
+        transforms.Resize(size),
+        transforms.CenterCrop(size),
+        transforms.Lambda(lambda x: (x - x.min())/(x.max() - x.min())),
         transforms.Lambda(lambda x: x.mul(255)),
     ])
     img = transform(image)
@@ -55,7 +58,7 @@ def postprocess_image(image):
 
 
 class Dataset:
-    def __init__(self, files, root_dir, shape=None, preprocess=True):
+    def __init__(self, files, root_dir, shape=256, preprocess=True):
         self.preprocess = preprocess
         self.shape = shape
         self.files = files
@@ -67,9 +70,9 @@ class Dataset:
     def __getitem__(self, idx):
         fname = self.files[idx]
         path = os.path.join(self.root_dir, fname)
-        image = load_image(path, shape=self.shape)
+        image = load_image(path)
         if self.preprocess:
-            image = preprocess_image(image)
+            image = preprocess_image(image, self.shape)
 
         return image
 
