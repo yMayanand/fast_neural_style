@@ -25,8 +25,8 @@ def load_image(img_path, shape=None):
     img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
     if shape is not None:
         img = cv2.resize(img, shape)
-    img = img.astype(np.float32)  # convert from uint8 to float32
-    img /= 255.0  # get to [0, 1] range
+    #img = img.astype(np.float32)  # convert from uint8 to float32
+    #img /= 255.0  # get to [0, 1] range
     return img
 
 def preprocess_image(image):
@@ -34,7 +34,6 @@ def preprocess_image(image):
     transform = transforms.Compose([
         transforms.ToTensor(),
         transforms.Lambda(lambda x: x.mul(255)),
-        transforms.Normalize(IMAGENET_MEAN_255, IMAGENET_STD_NEUTRAL)
     ])
     img = transform(image)
     return img

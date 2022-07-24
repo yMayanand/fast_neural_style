@@ -1,7 +1,7 @@
 import os
 import argparse
 
-from utils import load_image, preprocess_image, save_image, Dataset, AverageMeter, save_model
+from utils import *
 from model import VGG16
 from loss import ContentLoss, StyleLoss, TotalVariationLoss
 from fast_model import TransformerNet
@@ -11,6 +11,7 @@ from get_resources import download_and_extract
 
 import torch
 import torch.optim as optim
+from torchvision import transforms
 from torch.utils.tensorboard import SummaryWriter
 
 URL = 'http://images.cocodataset.org/zips/val2017.zip'
@@ -52,6 +53,10 @@ parser.add_argument('--log_image', type=int,
 
 
 def main(args):
+    transform = transforms.Compose([
+        transforms.ToTensor(),
+        transforms.Normalize(IMAGENET_MEAN, IMAGENET_STD)
+    ])
 
     writer = SummaryWriter(f"runs/{args.exp_name}")
 
@@ -83,7 +88,7 @@ def main(args):
 
 
     # preprocess image
-    style_tensor = preprocess_image(style_image).to(device).unsqueeze(0)
+    style_tensor = transform(style_image).to(device).unsqueeze(0)
 
     # model
     vgg = VGG16(requires_grad=False).to(device)
@@ -124,6 +129,7 @@ def main(args):
 
             transformer.train()
             image = transformer(data)
+            image = transforms.Normalize(IMAGENET_MEAN, IMAGENET_STD)(image)
             image_style_features = vgg(image)
             image_content_features = image_style_features.relu2_2
 

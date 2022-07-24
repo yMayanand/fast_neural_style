@@ -12,7 +12,8 @@ def infer(model, image, device, checkpoint=None):
     image = preprocess_image(image).unsqueeze(0).to(device)
     with torch.no_grad():
         out = model(image)
-    return out.detach().cpu().squeeze(0)
+    out = out.detach().cpu().squeeze(0).clamp(0, 255)
+    return out
 
 
 
