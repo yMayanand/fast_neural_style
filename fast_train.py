@@ -15,10 +15,11 @@ from torch.utils.tensorboard import SummaryWriter
 
 URL = 'http://images.cocodataset.org/zips/val2017.zip'
 fname = URL.split('/')[-1]
+download_and_extract(URL, fname)
 
 parser = argparse.ArgumentParser('arguments for training')
 
-parser.add_argument('--data_dir', type=str, help='path to image directory')
+parser.add_argument('--data_dir', type=str, default='./val2017', help='path to image directory')
 parser.add_argument('--style_image', type=str, help='path to style image')
 parser.add_argument('--exp_name', type=str, help='name of experiment that appears in tensorboard')
 parser.add_argument('--checkpoint', type=str, help='path of directory to save models')
@@ -50,8 +51,6 @@ parser.add_argument('--log_image', type=int,
 
 
 def main(args):
-
-    download_and_extract(URL, fname)
 
     writer = SummaryWriter(f"runs/{args.exp_name}")
 
