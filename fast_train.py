@@ -15,7 +15,8 @@ from torch.utils.tensorboard import SummaryWriter
 
 URL = 'http://images.cocodataset.org/zips/val2017.zip'
 fname = URL.split('/')[-1]
-download_and_extract(URL, fname)
+if not os.path.exists(fname):
+    download_and_extract(URL, fname)
 
 parser = argparse.ArgumentParser('arguments for training')
 
@@ -153,7 +154,7 @@ def main(args):
             if global_step % args.log_image == (args.log_image - 1):
                 idx = random.randint(0, (len(files) - 1))
                 image_path = os.path.join(args.data_dir, files[idx])
-                result = infer(transformer, image_path)
+                result = infer(transformer, image_path, device)
                 writer.add_image('debug_images', result, global_step)
 
             writer.add_scalar('loss/style_loss', s_loss_meter.val, global_step)
