@@ -34,7 +34,7 @@ parser.add_argument('--log_interval', type=int,
 
 
 parser.add_argument('--style_size', type=int,
-                    default=256, help='style image size')
+                    default=None, help='style image size')
 parser.add_argument('--content_size', type=int,
                     default=256, help='content image size')
 
@@ -81,9 +81,14 @@ def main(args):
         num_workers=args.workers
     )
 
+    if args.style_size is not None:
+        style_shape = (args.style_size, args.style_size)
+    else:
+        style_shape = None
+
     style_image = load_image(
         style_img_path,
-        shape=(args.style_size, args.style_size)
+        shape=style_shape
     )
 
 
