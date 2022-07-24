@@ -7,10 +7,14 @@ from loss import ContentLoss, StyleLoss, TotalVariationLoss
 from fast_model import TransformerNet
 from stylize import infer
 import random
+from get_resources import download_and_extract
 
 import torch
 import torch.optim as optim
 from torch.utils.tensorboard import SummaryWriter
+
+URL = 'http://images.cocodataset.org/zips/val2017.zip'
+fname = URL.split('/')[-1]
 
 parser = argparse.ArgumentParser('arguments for training')
 
@@ -46,6 +50,9 @@ parser.add_argument('--log_image', type=int,
 
 
 def main(args):
+
+    download_and_extract(URL, fname)
+
     writer = SummaryWriter(f"runs/{args.exp_name}")
 
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
