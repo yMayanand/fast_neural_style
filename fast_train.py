@@ -126,7 +126,7 @@ def main(args):
 
             target_style_features_ = []
             for i in target_style_features:
-                target_style_features_.append(torch.tile(i, (batch_size, 1, 1, 1)))
+                target_style_features_.append(torch.tile(i, (batch_size, 1, 1, 1)).detach())
 
             data = data.to(device)
 
@@ -148,7 +148,8 @@ def main(args):
 
             c_l = content_loss(target_content_features, image_content_features)
 
-            #t_l = torch.tensor(0.) #tv_loss(image)
+            #t_l = tv_loss(image)
+            
 
             loss = c_l + s_l #+ t_l
 
