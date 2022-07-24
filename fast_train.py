@@ -148,9 +148,9 @@ def main(args):
 
             c_l = content_loss(target_content_features, image_content_features)
 
-            t_l = torch.tensor(0.) #tv_loss(image)
+            #t_l = torch.tensor(0.) #tv_loss(image)
 
-            loss = c_l + s_l + t_l
+            loss = c_l + s_l #+ t_l
 
             loss.backward()
             optimizer.step()
@@ -158,7 +158,7 @@ def main(args):
 
             c_loss_meter.update(c_l.item())
             s_loss_meter.update(s_l.item())
-            tv_loss_meter.update(t_l.item())
+            #tv_loss_meter.update(t_l.item())
             total_loss.update(loss.item())
 
             del target_content_features, image, image_content_features, image_style_features, loss
@@ -175,7 +175,7 @@ def main(args):
 
             writer.add_scalar('loss/style_loss', s_loss_meter.val, global_step)
             writer.add_scalar('loss/content_loss', c_loss_meter.val, global_step)
-            writer.add_scalar('loss/tv_loss', tv_loss_meter.val, global_step)
+            #writer.add_scalar('loss/tv_loss', tv_loss_meter.val, global_step)
             writer.add_scalar('loss/total_loss', total_loss.val, global_step)
 
 
