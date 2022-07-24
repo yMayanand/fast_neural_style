@@ -1,0 +1,6 @@
+*.ipynb
+./data
+./style
+./__pycache__
+./runs
+./checkpoints
