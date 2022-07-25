@@ -25,8 +25,6 @@ def load_image(img_path, shape=None):
     img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
     if shape is not None:
         img = cv2.resize(img, shape)
-    #img = img.astype(np.float32)  # convert from uint8 to float32
-    #img /= 255.0  # get to [0, 1] range
     return img
 
 def preprocess_image(image, size):
@@ -43,8 +41,7 @@ def preprocess_image(image, size):
 
 def save_image(filename, data):
     """saves image after training"""
-    img = postprocess_image(data)
-    img = img.astype("uint8")
+    img = data.permute(1, 2, 0).numpy().astype(np.uint8)
     cv2.imwrite(filename, img[:, :, ::-1]) # converts rgb to bgr due to opencv constraint
 
 def postprocess_image(image):
@@ -105,3 +102,9 @@ def normalize_batch(batch):
     std = batch.new_tensor([0.229, 0.224, 0.225]).view(-1, 1, 1)
     batch = batch.div_(255.0)
     return (batch - mean) / std
+
+def quantize_model(model):
+    model.qconfig =  torch.quantization.get_default_qconfig("fbgemm")
+    model = torch.quantization.prepare(model)
+    model = torch.quantization.convert(model)
+    return model

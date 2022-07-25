@@ -1,9 +1,9 @@
 import torch
 from torch.nn.quantized import FloatFunctional
 
-class TransformerNet(torch.nn.Module):
+class QuantizedTransformerNet(torch.nn.Module):
     def __init__(self):
-        super(TransformerNet, self).__init__()
+        super(QuantizedTransformerNet, self).__init__()
         # Initial convolution layers
         # for Quantization 
         self.quant = torch.quantization.QuantStub()
