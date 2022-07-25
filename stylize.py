@@ -1,6 +1,7 @@
 import torch
 from fast_model import TransformerNet
-from utils import load_image, preprocess_image
+from torchvision import transforms
+from utils import load_image
 
 def infer(model, image, device, checkpoint=None):
     if checkpoint:
@@ -9,7 +10,12 @@ def infer(model, image, device, checkpoint=None):
     
     model.eval()
     image = load_image(image)
-    image = preprocess_image(image, 256).unsqueeze(0).to(device)
+    transform = transforms.Compose([
+        transforms.ToTensor(),
+        transforms.Lambda(lambda x: x.mul(255))
+
+    ])
+    image = transform(image).unsqueeze(0).to(device)
     with torch.no_grad():
         out = model(image)
     out = out.detach().cpu().squeeze(0).clamp(0, 255)

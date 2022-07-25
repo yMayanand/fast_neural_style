@@ -172,7 +172,7 @@ def main(args):
                 idx = random.randint(0, (len(files) - 1))
                 image_path = os.path.join(args.data_dir, files[idx])
                 result = infer(transformer, image_path, device)
-                writer.add_image('debug_images', result, global_step)
+                writer.add_image('debug_images', result.to(torch.uint8), global_step)
 
             writer.add_scalar('loss/style_loss', s_loss_meter.val, global_step)
             writer.add_scalar('loss/content_loss', c_loss_meter.val, global_step)
