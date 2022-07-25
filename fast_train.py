@@ -131,11 +131,11 @@ def main(args):
             data = data.to(device)
 
             vgg.eval()
-            target_content_features = vgg(data).relu2_2
+            target_content_features = vgg(normalize_batch(data)).relu2_2
 
             transformer.train()
             image = transformer(data)
-            image = transforms.Normalize(IMAGENET_MEAN, IMAGENET_STD)(image)
+            image = normalize_batch(image)
             image_style_features = vgg(image)
             image_content_features = image_style_features.relu2_2
 
