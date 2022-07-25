@@ -32,6 +32,8 @@ parser.add_argument('--epochs', type=int, default=100,
                     help='number of optimization steps')
 parser.add_argument('--log_interval', type=int,
                     default=10, help='logging interval')
+parser.add_argument('--resume', type=str,
+                    default=None, help='path to the saved model')
 
 
 parser.add_argument('--style_size', type=int,
@@ -101,6 +103,10 @@ def main(args):
 
     # style model
     transformer = TransformerNet().to(device)
+
+    if args.resume is not None:
+        state_dict = torch.load(args.resume, map_location=device)
+        transformer.load_state_dict(state_dict['weights'])
 
     # optimizer
     optimizer = optim.Adam(transformer.parameters(), lr=args.lr)
