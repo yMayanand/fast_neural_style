@@ -44,16 +44,6 @@ def save_image(filename, data):
     img = data.permute(1, 2, 0).numpy().astype(np.uint8)
     cv2.imwrite(filename, img[:, :, ::-1]) # converts rgb to bgr due to opencv constraint
 
-def postprocess_image(image):
-    """postprocesses images after training"""
-    image = image.squeeze(0)
-    image = image.cpu().detach().clone().numpy()
-    image = image.transpose(1, 2, 0)
-    image = (image * IMAGENET_STD_NEUTRAL) + IMAGENET_MEAN_255
-    image = image.clip(0, 255)
-    return image
-
-
 class Dataset:
     def __init__(self, files, root_dir, shape=256, preprocess=True):
         self.preprocess = preprocess

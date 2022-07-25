@@ -3,7 +3,7 @@ import gc
 import argparse
 
 from utils import *
-from model import VGG16
+from vgg_model import VGG16
 from loss import ContentLoss, StyleLoss, TotalVariationLoss
 from fast_model import TransformerNet
 from stylize import infer
@@ -177,7 +177,7 @@ def main(args):
             if global_step % args.log_image == (args.log_image - 1):
                 idx = random.randint(0, (len(files) - 1))
                 image_path = os.path.join(args.data_dir, files[idx])
-                result = infer(transformer, image_path, device)
+                result = infer(image_path, device=str(device), model=transformer)
                 writer.add_image('debug_images', result.to(torch.uint8), global_step)
 
             writer.add_scalar('loss/style_loss', s_loss_meter.val, global_step)

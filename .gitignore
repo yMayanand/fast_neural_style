@@ -4,4 +4,3 @@ style/
 __pycache__/
 runs/
 checkpoints/
-output/
