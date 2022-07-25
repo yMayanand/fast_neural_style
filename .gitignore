@@ -4,3 +4,4 @@ style/
 __pycache__/
 runs/
 checkpoints/
+neural_style_transfer/video.py
