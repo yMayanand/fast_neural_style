@@ -39,20 +39,17 @@ def main(args):
     out = infer(args.image, device=args.device, model=None, checkpoint=args.model_path)
     save_image(filename, out)
 
-
-parser = argparse.ArgumentParser('arguments for styling image')
-
-parser.add_argument('--image', type=str, required=True, help='path to image to be styled')
-parser.add_argument('--model_path', type=str, help='path to the saved model')
-parser.add_argument('--device', type=str, default='cpu', help='device to be used run model')
-parser.add_argument('--save_dir', type=str, default='./output', help='directory to save output images')
-parser.add_argument('--out_name', type=str, default='output.jpg', help='name of the output image')
-
-
-args = parser.parse_args()
-
-
 if __name__ == '__main__':
+    parser = argparse.ArgumentParser('arguments for styling image')
+
+    parser.add_argument('--image', type=str, required=True, help='path to image to be styled')
+    parser.add_argument('--model_path', type=str, help='path to the saved model')
+    parser.add_argument('--device', type=str, default='cpu', help='device to be used run model')
+    parser.add_argument('--save_dir', type=str, default='./output', help='directory to save output images')
+    parser.add_argument('--out_name', type=str, default='output.jpg', help='name of the output image')
+
+
+    args = parser.parse_args()
     main(args)
 
 
