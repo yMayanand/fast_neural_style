@@ -17,8 +17,8 @@ from torch.utils.tensorboard import SummaryWriter
 
 URL = 'http://images.cocodataset.org/zips/val2017.zip'
 fname = URL.split('/')[-1]
-if not os.path.exists(fname):
-    download_and_extract(URL, fname)
+
+download_and_extract(URL, fname)
 
 parser = argparse.ArgumentParser('arguments for training')
 
